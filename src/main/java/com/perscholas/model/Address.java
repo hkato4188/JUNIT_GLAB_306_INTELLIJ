@@ -3,6 +3,14 @@ package com.perscholas.model;
 import java.io.Serializable;
 
 import jakarta.persistence.*;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+
+import java.util.List;
+
+
 
 
 @Entity
@@ -62,6 +70,21 @@ public class Address implements Serializable {
 
     public void setZipcode(int zipcode) {
         this.zipcode = zipcode;
+    }
+
+    public static Address addressLookupByCity(String city) {
+        SessionFactory factory = new Configuration().configure().buildSessionFactory();
+        Session session = factory.openSession();
+        Transaction t = session.beginTransaction();
+
+        String hql = "FROM Address WHERE city = :city";
+        TypedQuery<Address> query = session.createQuery(hql, Address.class);
+        query.setParameter("city", city);
+        List<Address> results = query.getResultList();
+        Address foundAddress = results.isEmpty() ? null : results.get(0);
+
+        session.close();
+        return foundAddress;
     }
 
 }

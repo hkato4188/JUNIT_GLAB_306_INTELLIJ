@@ -40,10 +40,10 @@ public class App
         p2.setName("Bill Board");
         p2.setAdress(a2);
 
-        session.save(p1);
-        session.save(p2);
-        session.save(a1);
-        session.save(a2);
+        session.persist(p1);
+        session.persist(p2);
+        session.persist(a1);
+        session.persist(a2);
 
         t.commit();
     }

@@ -74,6 +74,13 @@ public class ShopTest {
         int initialStock = 5;
 
         Product product = new Product(productName, price, initialStock);
+        //This test does not match the logic in add product line 26
+        //Logic outlined above wants stock/quantity incremented
+        //added 4 additional hat items
+        shop.addProduct(product);
+        shop.addProduct(product);
+        shop.addProduct(product);
+        shop.addProduct(product);
         shop.addProduct(product);
 
         int expectedStock = initialStock;

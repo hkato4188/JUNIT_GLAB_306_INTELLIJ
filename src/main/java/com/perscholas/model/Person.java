@@ -1,6 +1,15 @@
 package com.perscholas.model;
 
 import jakarta.persistence.*;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+
+import java.util.List;
+
+
+
 @Entity
 @Table
 public class Person {
@@ -54,4 +63,23 @@ public class Person {
     public void setAge(int age) {
         this.age = age;
     }
+
+    public static Person personLookupByName(String name){
+        SessionFactory factory = new Configuration().configure().buildSessionFactory();
+        Session session = factory.openSession();
+        Transaction t = session.beginTransaction();
+
+        String hql = "FROM Person WHERE name = :name";
+        TypedQuery<Person> query = session.createQuery(hql, Person.class);
+        query.setParameter("name", name);
+        List<Person> results = query.getResultList();
+        Person foundPerson = results.isEmpty() ? null : results.get(0);
+
+        session.close();
+        return foundPerson;
+    }
+
+
 }
+
+
